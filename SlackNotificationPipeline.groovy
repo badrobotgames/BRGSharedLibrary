@@ -32,7 +32,7 @@ stages
 		}
 	}	
 	
-	stage('Initialize')
+	stage('Step 2')
 	{
 		steps
 		{			
