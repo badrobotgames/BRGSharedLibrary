@@ -2,6 +2,8 @@
 import io.jenkins.blueocean.rest.impl.pipeline.PipelineNodeGraphVisitor
 import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
 
+
+@NonCPS
 def call() {
 	echo 'Getting all stages'
 
