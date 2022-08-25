@@ -2,47 +2,44 @@
 
 pipeline
 {
-agent any
+	agent any
 
-stages
-{
-	stage('Initialize')
+	stages
 	{
-		steps
-		{			
-			script
-			{
-				slackMessage = null
-				stageStatus = [:]
+		stage('Initialize')
+		{
+			steps
+			{			
+				script
+				{
+					stages = GetAllStages()
 
-				def stages = GetAllStages()
-
+				}
 			}
-		}
-	}	
-	
-	stage('Step 1')
-	{
-		steps
-		{			
-			script
-			{
-				UpdateSlackStatus()
+		}	
+		
+		stage('Step 1')
+		{
+			steps
+			{			
+				script
+				{
+					UpdateSlackStatus()
+				}
 			}
-		}
-	}	
-	
-	stage('Step 2')
-	{
-		steps
-		{			
-			script
-			{
-				UpdateSlackStatus()
+		}	
+		
+		stage('Step 2')
+		{
+			steps
+			{			
+				script
+				{
+					UpdateSlackStatus()
+				}
 			}
 		}
 	}
-}
 }
 
 def SlackLog(message) 
@@ -67,7 +64,7 @@ def SlackMessage(message, color)
 
 def UpdateSlackStatus()
 {
-	updateMessage = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
+	def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
 	stages.each { stage ->
 		updateMesage = "${updateMessage}/n   - ${stage.displayName} : ${stage.status}"
 	}
