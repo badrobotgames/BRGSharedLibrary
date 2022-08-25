@@ -13,7 +13,7 @@ pipeline
 				script
 				{
 					allStages = GetAllStages()
-
+					echo "${allStages}"
 				}
 			}
 		}	
