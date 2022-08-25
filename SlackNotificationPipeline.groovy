@@ -2,27 +2,47 @@
 
 pipeline
 {
-	agent any
+agent any
 
-    stages
-    {
-		stage('Initialize')
-		{
-			steps
-			{			
-				script
-				{
-                    slackMessage = null
-                    stageStatus = [:]
+stages
+{
+	stage('Initialize')
+	{
+		steps
+		{			
+			script
+			{
+				slackMessage = null
+				stageStatus = [:]
 
-                    GetAllStages()
-                    echo 'Hello world'
-                    sayHello 'Jenkins'
+				def stages = GetAllStages()
 
-				}
+			}
+		}
+	}	
+	
+	stage('Step 1')
+	{
+		steps
+		{			
+			script
+			{
+				UpdateSlackStatus()
+			}
+		}
+	}	
+	
+	stage('Initialize')
+	{
+		steps
+		{			
+			script
+			{
+				UpdateSlackStatus()
 			}
 		}
 	}
+}
 }
 
 def SlackLog(message) 
@@ -39,12 +59,18 @@ def SlackError(message)
 }
 def SlackMessage(message, color) 
 {
-    if(slackMessage)
-    {
-	    slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
-    }
+	if(slackMessage)
+	{
+		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
+	}
 }
+
 def UpdateSlackStatus()
 {
+	updateMessage = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
+	stages.each { stage ->
+		updateMesage = "${updateMessage}/n   - ${stage.displayName} : ${stage.status}"
+	}
 
+	echo updateMessage
 }
