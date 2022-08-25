@@ -24,6 +24,7 @@ pipeline
 			{			
 				script
 				{
+					echo 'Step 1'
 					UpdateSlackStatus()
 				}
 			}
@@ -35,6 +36,7 @@ pipeline
 			{			
 				script
 				{
+					echo 'Step 1'
 					UpdateSlackStatus()
 				}
 			}
@@ -64,6 +66,7 @@ def SlackMessage(message, color)
 
 def UpdateSlackStatus()
 {
+	echo 'UpdateStackStatus'
 	def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
 	allStages.each { stage ->
 		updateMesage = "${updateMessage}/n   - ${stage.displayName} : ${stage.status}"
