@@ -13,6 +13,7 @@ pipeline
 				script
 				{
 					echo "Initialize"
+					GetAllStages()
 				}
 			}
 		}	
