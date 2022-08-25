@@ -2,7 +2,7 @@
 // import io.jenkins.blueocean.rest.impl.pipeline.PipelineNodeGraphVisitor
 // import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
 
-def call(String name = 'human') {
+def call() {
     echo 'Getting all stages'
 
     // Get all pipeline nodes that represent stages
