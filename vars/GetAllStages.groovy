@@ -8,5 +8,7 @@ def call() {
 	// Get all pipeline nodes that represent stages
 	def visitor = new PipelineNodeGraphVisitor( currentBuild.rawBuild )
 	def stages = visitor.pipelineNodes.findAll{stage -> stage.type == FlowNodeWrapper.NodeType.STAGE }
-	return stages
+    
+    def results = childStages.collect{ stage -> stage }
+	return results
 }
