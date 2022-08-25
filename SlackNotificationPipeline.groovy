@@ -12,8 +12,7 @@ pipeline
 			{			
 				script
 				{
-					allStages = GetAllStages()
-					echo "${allStages}"
+					echo "Initialize"
 				}
 			}
 		}	
@@ -66,11 +65,7 @@ def SlackMessage(message, color)
 
 def UpdateSlackStatus()
 {
-	echo 'UpdateStackStatus'
-	def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
-	allStages.each { stage ->
-		updateMesage = "${updateMessage}/n   - ${stage.displayName} : ${stage.status}"
-	}
-
+	def updateMessage = GetAdvancedStatusMessage()
+	
 	echo updateMessage
 }
