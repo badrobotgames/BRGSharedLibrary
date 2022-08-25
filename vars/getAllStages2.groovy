@@ -6,7 +6,7 @@ def call(String name = 'human') {
     echo 'Getting all stages'
 
     // Get all pipeline nodes that represent stages
-    def visitor = new io.jenkins.blueocean.rest.impl.pipeline.PipelineNodeGraphVisitor( build.rawBuild )
+    //def visitor = new io.jenkins.blueocean.rest.impl.pipeline.PipelineNodeGraphVisitor( build.rawBuild )
     //echo "${visitor}"
 
     // def stages = visitor.pipelineNodes.findAll{stage -> stage.type == FlowNodeWrapper.NodeType.STAGE }
