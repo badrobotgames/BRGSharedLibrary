@@ -5,7 +5,7 @@ import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
 def call() {
 	def message = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
 	// Get all pipeline nodes that represent stages
-	def visitor = new PipelineNodeGraphVisitor(previousBuild.rawBuild)
+	def visitor = new PipelineNodeGraphVisitor(currentBuild.getPreviousBuild().rawBuild)
 
 	visitor.getPipelineNodes().each{ blarg -> echo "${blarg}" }
 
