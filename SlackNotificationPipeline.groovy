@@ -15,7 +15,7 @@ pipeline
                     slackMessage = null
                     stageStatus = [:]
 
-                    GetAllStages('wat')
+                    getAllStages2('wat')
                     echo 'Hello world'
                     sayHello 'Jenkins'
 
