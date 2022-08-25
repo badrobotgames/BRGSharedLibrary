@@ -12,7 +12,7 @@ pipeline
 			{			
 				script
 				{
-					def allStages = GetAllStages()
+					allStages = GetAllStages()
 
 				}
 			}
