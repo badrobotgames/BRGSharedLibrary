@@ -7,7 +7,7 @@ import org.jenkinsci.plugins.workflow.actions.ErrorAction
 def call() {
     // Get all pipeline nodes that represent stages
     def visitor = new PipelineNodeGraphVisitor( build.rawBuild )
-    def stages = visitor.pipelineNodes.findAll{ it.type == FlowNodeWrapper.NodeType.STAGE }
+    def stages = visitor.pipelineNodes.findAll{ it -> it.type == FlowNodeWrapper.NodeType.STAGE }
     echo "${stages}"
     //return stages
 }
