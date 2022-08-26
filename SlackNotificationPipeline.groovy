@@ -1,10 +1,13 @@
 @Library('BRGSharedLibrary')_
 
-def slackMessage
-
 pipeline
 {
 	agent any
+	 
+	environment 
+	{
+		slackMessage=null
+    }
 
 	stages
 	{
@@ -60,14 +63,14 @@ def SlackError(message)
 }
 def SlackMessage(message, color) 
 {
-	if(slackMessage == null)
+	if(env.slackMessage == null)
 	{
 		echo 'blarg'
-		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
+		env.slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
 	}
 	else
 	{
-		slackMessage = slackSend(channel: slackMessage.channelId, filePath: 'console-log.txt')
+		env.slackMessage = slackSend(channel: slackMessage.channelId, filePath: 'console-log.txt')
 	}
 }
 
