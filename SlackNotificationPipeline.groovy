@@ -59,7 +59,7 @@ def SlackError(message)
 }
 def SlackMessage(message, color) 
 {
-	if(slackMessage != null)
+	if(slackMessage == null)
 	{
 		slackMessage = slackSend(channel: 'kara-testing', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
 	}
