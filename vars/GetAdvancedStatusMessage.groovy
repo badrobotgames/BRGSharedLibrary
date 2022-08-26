@@ -9,6 +9,6 @@ def call() {
 	def visitor = new PipelineNodeGraphVisitor(currentBuild.getPreviousBuild().rawBuild)
 	def stages = visitor.pipelineNodes.findAll{stage -> stage.type == FlowNodeWrapper.NodeType.STAGE }
     
-    stages.each{ stage -> message = "${message}\n   - ${stage.displayName} : ${stage.status}" }
+    stages.each{ stage -> message = "${message}\n   - ${stage.displayName} : ${stage.status.state.}" }
 	return message
 }
