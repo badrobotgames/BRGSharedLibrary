@@ -1,5 +1,7 @@
 @Library('BRGSharedLibrary')_
 
+def slackMessage
+
 pipeline
 {
 	agent any
@@ -12,7 +14,6 @@ pipeline
 			{			
 				script
 				{
-					def slackMessage
 					echo "Initialize"
 					UpdateSlackStatus()
 				}
