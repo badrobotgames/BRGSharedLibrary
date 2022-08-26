@@ -12,7 +12,7 @@ pipeline
 			{			
 				script
 				{
-					slackMessage = null
+					slackMessage
 					echo "Initialize"
 					UpdateSlackStatus()
 				}
@@ -61,6 +61,7 @@ def SlackMessage(message, color)
 {
 	if(slackMessage == null)
 	{
+		echo 'blarg'
 		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
 	}
 	else
