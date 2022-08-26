@@ -12,13 +12,14 @@ def call() {
 	def previousStages = previousVisitor.getPipelineNodes()
     
 	previousStages.each{ previousStage -> 
-		def stage = stages.find(currStage -> currStage.displayName == previousStage.displayName)
+		def currStage = stages.find{ stage -> stage.displayName == previousStage.displayName }
 		def status = BlueRun.BlueRunState.QUEUED
-		if(stage)
+		if(currStage)
 		{
-			status = stage.status.state
+			currStage = previousStage
+			status = currStage.status.state
 		}
-		message = "${message}\n   - ${stage.displayName} : ${status}" 
+		message = "${message}\n   - ${currStage.displayName} : ${status}" 
 	}
 
 	return message
