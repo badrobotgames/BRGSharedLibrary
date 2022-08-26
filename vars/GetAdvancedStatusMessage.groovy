@@ -17,10 +17,9 @@ def call() {
 		def status = BlueRunState.QUEUED
 		if(currStage)
 		{
-			currStage = previousStage
 			status = currStage.status.state
 		}
-		message = "${message}\n   - ${currStage.displayName} : ${status}" 
+		message = "${message}\n   - ${previousStage.displayName} : ${status}" 
 	}
 
 	return message
