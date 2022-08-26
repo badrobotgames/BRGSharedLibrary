@@ -66,6 +66,7 @@ def SlackMessage(message, color)
 	}
 	else
 	{
+		echo 'blarg'
 		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
 		hasSlackMessage = true
 	}
