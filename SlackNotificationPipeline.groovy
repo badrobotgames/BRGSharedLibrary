@@ -12,7 +12,7 @@ pipeline
 			{			
 				script
 				{
-					slackMessage
+					def slackMessage
 					echo "Initialize"
 					UpdateSlackStatus()
 				}
