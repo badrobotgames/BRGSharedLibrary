@@ -14,7 +14,7 @@ def call() {
     
 	previousStages.each{ previousStage -> 
 		def currStage = stages.find{ stage -> stage.displayName == previousStage.displayName }
-		def status = BlueRun.BlueRunState.QUEUED
+		def status = BlueRunState.QUEUED
 		if(currStage)
 		{
 			currStage = previousStage
