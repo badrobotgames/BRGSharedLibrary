@@ -6,8 +6,8 @@ def call() {
 	def message = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
 
 	// Get all pipeline nodes that represent stages
-	def visitor = new PipelineNodeGraphpreviousVisitor(currentBuild.rawBuild)
-	def previousVisitor = new PipelineNodeGraphpreviousVisitor(currentBuild.getPreviousBuild().rawBuild)
+	def visitor = new PipelineNodeGraphVisitor(currentBuild.rawBuild)
+	def previousVisitor = new PipelineNodeGraphVisitor(currentBuild.getPreviousBuild().rawBuild)
 	def stages = visitor.getPipelineNodes()//.findAll{stage -> stage.type == FlowNodeWrapper.NodeType.STAGE }
 	def previousStages = previousVisitor.getPipelineNodes()//.findAll{stage -> stage.type == FlowNodeWrapper.NodeType.STAGE }
     
