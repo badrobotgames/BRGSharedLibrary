@@ -13,7 +13,7 @@ pipeline
 				script
 				{
 					echo "Initialize"
-					GetAllStages()
+					UpdateSlackStatus()
 				}
 			}
 		}	
