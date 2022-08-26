@@ -62,7 +62,7 @@ def SlackMessage(message, color)
 {
 	if(hasSlackMessage)
 	{
-		slackMessage = slackSend(channel: slackMessage.channelId, filePath: 'console-log.txt')
+		slackSend(channel: slackMessage.channelId, message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
 	}
 	else
 	{
