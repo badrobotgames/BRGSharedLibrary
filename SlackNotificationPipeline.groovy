@@ -4,6 +4,12 @@ pipeline
 {
 	agent any
 
+	parameters
+	{
+		booleanParam name: 'SKIP', defaultValue: false, description: 'Test a skip'
+		booleanParam name: 'FAIL', defaultValue: false, description: 'Test a failure'
+	}
+
 	stages
 	{
 		stage('Initialize')
@@ -12,10 +18,9 @@ pipeline
 			{			
 				script
 				{
-					slackMessage = null
-					hasSlackMessage = false
 					echo "Initialize"
-					UpdateSlackStatus()
+					slackUtils = new SlackUtils()
+					slackUtils.PostStatusToSlack()
 				}
 			}
 		}	
@@ -27,7 +32,7 @@ pipeline
 				script
 				{
 					echo 'Step 1'
-					UpdateSlackStatus()
+					slackUtils.PostStatusToSlack()
 				}
 			}
 		}	
@@ -39,42 +44,75 @@ pipeline
 				script
 				{
 					echo 'Step 1'
-					UpdateSlackStatus()
+					slackUtils.PostStatusToSlack()
 				}
+			}
+		}
+		
+		stage('Step 3')
+		{
+			when
+			{
+				expression
+				{
+					params.SKIP == true
+				}
+			}
+			steps
+			{			
+				script
+				{
+					echo 'Step 3'
+					slackUtils.PostStatusToSlack()
+				}
+			}
+		}
+		
+		stage('Step 4')
+		{
+			steps
+			{			
+				script
+				{
+					if(params.FAIL)
+					{
+						error("This pipeline stops here!")
+					}
+				}
+			}
+		}
+	}
+	
+	post
+	{
+		always
+		{			
+			script
+			{
+				slackUtils.PostStatusToSlack()
+			}
+		}
+		failure
+		{
+			script
+			{
+				sh("cp \"${env.JENKINS_HOME}/jobs/${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/log\" console-log.txt".toString())
+				slackUtils.UploadToSlackMessage('console-log.txt')
 			}
 		}
 	}
 }
 
-def SlackLog(message) 
-{
-	return SlackMessage(message, '32a852')
-}
-def SlackWarn(message) 
-{
-	return SlackMessage(message, 'e4be3a')
-}
-def SlackError(message) 
-{
-	return SlackMessage(message, 'CC1111')
-}
-def SlackMessage(message, color) 
-{
-	if(hasSlackMessage)
-	{
-		slackSend(channel: slackMessage.channelId, message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
-	}
-	else
-	{
-		echo 'blarg'
-		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
-		hasSlackMessage = true
-	}
-}
+//def SlackLog(message) 
+//{
+//	return SlackMessage(message, '32a852')
+//}
+//def SlackWarn(message) 
+//{
+//	return SlackMessage(message, 'e4be3a')
+//}
+//def SlackError(message) 
+//{
+//	return SlackMessage(message, 'CC1111')
+//}
 
-def UpdateSlackStatus()
-{
-	def updateMessage = GetAllStagesStatus()
-	SlackLog(updateMessage.toString())
-	echo updateMessage
-}
