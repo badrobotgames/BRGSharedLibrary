@@ -44,6 +44,13 @@ pipeline
 	}
 }
 
+def UpdateSlackStatus()
+{
+	def updateMessage = GetAllStagesStatus()
+	SlackLog(updateMessage)
+	echo updateMessage
+}
+
 def SlackLog(message) 
 {
 	return SlackMessage(message, '32a852')
@@ -66,11 +73,4 @@ def SlackMessage(message, color)
 	{
 		slackMessage = slackSend(channel: slackMessage.channelId, filePath: 'console-log.txt')
 	}
-}
-
-def UpdateSlackStatus()
-{
-	def updateMessage = GetAllStagesStatus()
-	SlackLog(updateMessage)
-	echo updateMessage
 }
