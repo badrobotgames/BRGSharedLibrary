@@ -4,7 +4,7 @@ import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
 import io.jenkins.blueocean.rest.model.BlueRun.BlueRunState
 
 def call() {
-	def message = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
+	def message = ''
 
 	// Get all pipeline nodes that represent stages
 	def visitor = new PipelineNodeGraphVisitor(currentBuild.rawBuild)
@@ -15,11 +15,31 @@ def call() {
 	previousStages.each{ previousStage -> 
 		def currStage = stages.find{ stage -> stage && stage.displayName == previousStage.displayName }
 		def status = BlueRunState.QUEUED
+		
 		if(currStage)
 		{
 			status = currStage.status.state
 		}
-		message = "${message}\n   - ${previousStage.displayName} : ${status}" 
+		else
+		{
+			currStage = previousStage
+		}
+
+		def durationMessage = ''
+		switch(status)
+		{
+			case BlueRunState.QUEUED:
+			case BlueRunState.RUNNING:
+				durationMessage = "\n     Expected duration : ${new Date(currStage.getTiming().getTotalDurationMillis()).format("mm:ss")}"
+				break
+
+			case BlueRunState.FINISHED:
+				durationMessage = "\n     Ran for : ${new Date(currStage.getTiming().getTotalDurationMillis()).format("mm:ss")}"
+				
+			default: 
+				break 
+		}
+		message = "${message}\n  - ${previousStage.displayName} : ${status}${durationMessage}" 
 	}
 
 	return message

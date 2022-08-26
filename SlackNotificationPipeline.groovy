@@ -60,13 +60,17 @@ def SlackMessage(message, color)
 {
 	if(slackMessage)
 	{
-		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
+		slackMessage = slackSend(channel: 'kara-testing', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
+	}
+	else
+	{
+		slackMessage = slackSend(channel: slackMessage.channelId, filePath: 'console-log.txt')
 	}
 }
 
 def UpdateSlackStatus()
 {
-	def updateMessage = GetAdvancedStatusMessage()
-	
+	def updateMessage = GetAllStagesStatus()
+	SlackLog(updateMessage)
 	echo updateMessage
 }
