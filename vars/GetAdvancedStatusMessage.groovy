@@ -13,7 +13,7 @@ def call() {
 	def previousStages = previousVisitor.getPipelineNodes()
     
 	previousStages.each{ previousStage -> 
-		def currStage = stages.find{ stage -> stage.displayName == previousStage.displayName }
+		def currStage = stages.find{ stage -> stage && stage.displayName == previousStage.displayName }
 		def status = BlueRunState.QUEUED
 		if(currStage)
 		{
