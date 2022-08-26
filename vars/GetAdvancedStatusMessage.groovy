@@ -1,6 +1,7 @@
 #!/usr/bin/env groovy
 import io.jenkins.blueocean.rest.impl.pipeline.PipelineNodeGraphVisitor
 import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
+import io.jenkins.blueocean.rest.model.BlueRun.BlueRunState
 
 def call() {
 	def message = "${env.JOB_NAME}_${env.BUILD_ID} Status:"
