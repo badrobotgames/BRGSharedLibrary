@@ -61,7 +61,7 @@ def SlackMessage(message, color)
 {
 	if(slackMessage == null)
 	{
-		slackMessage = slackSend(channel: 'kara-testing', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
+		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
 	}
 	else
 	{
