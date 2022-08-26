@@ -3,11 +3,6 @@
 pipeline
 {
 	agent any
-	 
-	environment 
-	{
-		slackMessage=null
-    }
 
 	stages
 	{
@@ -17,6 +12,8 @@ pipeline
 			{			
 				script
 				{
+					slackMessage = null
+					hasSlackMessage = false
 					echo "Initialize"
 					UpdateSlackStatus()
 				}
@@ -63,14 +60,14 @@ def SlackError(message)
 }
 def SlackMessage(message, color) 
 {
-	if(env.slackMessage == null)
+	if(hasSlackMessage)
 	{
-		echo 'blarg'
-		env.slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
+		slackMessage = slackSend(channel: slackMessage.channelId, filePath: 'console-log.txt')
 	}
 	else
 	{
-		env.slackMessage = slackSend(channel: slackMessage.channelId, filePath: 'console-log.txt')
+		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
+		hasSlackMessage = true
 	}
 }
 
