@@ -12,6 +12,7 @@ pipeline
 			{			
 				script
 				{
+					slackMessage = null
 					echo "Initialize"
 					UpdateSlackStatus()
 				}
