@@ -62,7 +62,7 @@ def SlackMessage(message, color)
 {
 	if(hasSlackMessage)
 	{
-		slackSend(channel: slackResponse.threadId, message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
+		slackSend(channel: slackMessage.threadId, message: "${env.JOB_NAME}_${env.BUILD_ID}: ${message}".toString(), color: "${color}".toString())
 	}
 	else
 	{
