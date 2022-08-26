@@ -8,19 +8,18 @@ def call() {
 	// Get all pipeline nodes that represent stages
 	def visitor = new PipelineNodeGraphVisitor(currentBuild.rawBuild)
 	def previousVisitor = new PipelineNodeGraphVisitor(currentBuild.getPreviousBuild().rawBuild)
-	def stages = visitor.getPipelineNodes()//.findAll{stage -> stage.type == FlowNodeWrapper.NodeType.STAGE }
-	def previousStages = previousVisitor.getPipelineNodes()//.findAll{stage -> stage.type == FlowNodeWrapper.NodeType.STAGE }
+	def stages = visitor.getPipelineNodes()
+	def previousStages = previousVisitor.getPipelineNodes()
     
-    stages.each{ stage -> 
-		message = "${message}\n   - ${stage.displayName} : ${stage.status.state}" 
-	}   
-
-    //previousStages.each{ previousStage -> 
-	//	def state = visitor.
-	//	previousStage.status.state
-	//	if(state)
-	//	message = "${message}\n   - ${stage.displayName} : ${state}" 
-	//}
+	previousStages.each{ previousStage -> 
+		def stage = stages.find(currStage -> currStage.displayName == previousStage.displayName)
+		def status = BlueRun.BlueRunState.QUEUED
+		if(stage)
+		{
+			status = stage.status.state
+		}
+		message = "${message}\n   - ${stage.displayName} : ${status}" 
+	}
 
 	return message
 }
