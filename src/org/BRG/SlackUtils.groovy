@@ -42,6 +42,6 @@ class SlackUtils
 
 	def UploadToThread(filePath) 
 	{
-		context.slackUploadFile(channel: 'invasion-builds' + slackMessage.ts, filePath: filePath)
+		context.slackUploadFile(channel: 'invasion-builds:' + slackMessage.ts, filePath: filePath)
 	}
 }
