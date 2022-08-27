@@ -93,6 +93,8 @@ class SlackUtils
 				"fields": changesFields		
 			]
 		]
+
+		PostBlockToThread(blocks)
 	}
 
 	def PostParameters()
