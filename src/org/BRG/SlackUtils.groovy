@@ -36,7 +36,7 @@ class SlackUtils
 		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString(), color: "${color}".toString())
 	}
 
-	def PostBlockToThread(blocks, color) 
+	def PostBlockToThread(blocks) 
 	{
 		context.slackSend(channel: slackMessage.threadId, blocks: blocks)
 	}
@@ -53,7 +53,7 @@ class SlackUtils
 
 	def PostParameters()
 	{
-		blocks = [
+		def blocks = [
 			[
 				"type": "header",
 				"text": [
@@ -64,15 +64,13 @@ class SlackUtils
 			]
 		]
 		
-		String paramsMessage = 'PARAMETERS'
 		context.params.each { param ->
 			def paramName = param.key.replaceAll("[\r\n]+", "")
 			def paramValue = param.value
 			if(paramValue.getClass() == String)
 			{
-				paramValue = paramValue.replaceAll("[\r\n]+", "")
+				paramValue = paramValue.replaceAll("[\r\n]+", ", ")
 			}
-			paramsMessage = "${paramsMessage},  ${paramName}(${paramValue})".toString()
 			blocks.add(
 				[
 					"type": "section",
@@ -90,6 +88,6 @@ class SlackUtils
 			)
 		}
 		
-		PostBlockToThread(paramsMessage)
+		PostBlockToThread(blocks)
 	}
 }
