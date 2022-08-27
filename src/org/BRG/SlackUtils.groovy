@@ -38,7 +38,7 @@ class SlackUtils
 			}
 			paramsMessage = "${paramsMessage},  ${paramName}(${paramValue})".toString()
 		}
-		PostToThread(paramsMessage, color: '777777')
+		PostToThread(paramsMessage, '777777')
 	}
 
 	def UpdateMessage(message, color) 
