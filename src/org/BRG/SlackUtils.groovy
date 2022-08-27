@@ -23,7 +23,6 @@ class SlackUtils
 	{
 		def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID}: ${context.GetAllStagesStatus()}"
 		UpdateSlackMessage(updateMessage.toString(), 'CCCCCC')
-		echo updateMessage
 	}
 
 	def UpdateSlackMessage(message, color) 
