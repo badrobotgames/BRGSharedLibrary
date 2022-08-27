@@ -16,13 +16,29 @@ class SlackUtils
 
 	def Initialize()
 	{
-		slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: 'CCCCCC')
+		slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: '777777')
+		PostParameters()
 	}
 
 	def PostStatus()
 	{
 		def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID}: ${context.GetAllStagesStatus()}"
 		UpdateMessage(updateMessage.toString(), 'CCCCCC')
+	}
+
+	def PostParameters()
+	{
+		String paramsMessage = 'PARAMETERS'
+		context.params.each { param ->
+			paramName = param.key.replaceAll("[\r\n]+", "")
+			paramValue = param.value
+			if(paramValue.getClass() == String)
+			{
+				paramValue = paramValue.replaceAll("[\r\n]+", "")
+			}
+			paramsMessage = "${paramsMessage},  ${paramName}(${paramValue})".toString()
+		}
+		PostToThread(paramsMessage, color: '777777')
 	}
 
 	def UpdateMessage(message, color) 

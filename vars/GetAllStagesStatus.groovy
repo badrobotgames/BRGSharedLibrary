@@ -30,7 +30,7 @@ def call() {
 		{
 			case BlueRunState.QUEUED:
 			case BlueRunState.RUNNING:
-				durationMessage = "\n     Expected duration : ${new Date(currStage.getTiming().getTotalDurationMillis()).format("mm:ss")}"
+				durationMessage = "\n     Previous runtime : ${new Date(currStage.getTiming().getTotalDurationMillis()).format("mm:ss")}"
 				break
 
 			case BlueRunState.FINISHED:

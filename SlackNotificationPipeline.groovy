@@ -22,7 +22,7 @@ pipeline
 					slackUtils = new org.BRG.SlackUtils(this)
 					slackUtils.Initialize()
 					slackUtils.PostStatus()
-					sleep 10
+					sleep 1
 				}
 			}
 		}	
@@ -35,7 +35,7 @@ pipeline
 				{
 					echo 'Step 1'
 					slackUtils.PostStatus()
-					sleep 11
+					sleep 1
 				}
 			}
 		}	
@@ -48,7 +48,7 @@ pipeline
 				{
 					echo 'Step 2'
 					slackUtils.PostStatus()
-					sleep 12
+					sleep 2
 				}
 			}
 		}
@@ -68,7 +68,7 @@ pipeline
 				{
 					echo 'Step 3'
 					slackUtils.PostStatus()
-					sleep 13
+					sleep 3
 				}
 			}
 		}
@@ -83,7 +83,7 @@ pipeline
 					{
 						error("This pipeline stops here!")
 					}
-					sleep 14
+					sleep 4
 				}
 			}
 		}
@@ -108,17 +108,3 @@ pipeline
 		}
 	}
 }
-
-//def SlackLog(message) 
-//{
-//	return SlackMessage(message, '32a852')
-//}
-//def SlackWarn(message) 
-//{
-//	return SlackMessage(message, 'e4be3a')
-//}
-//def SlackError(message) 
-//{
-//	return SlackMessage(message, 'CC1111')
-//}
-
