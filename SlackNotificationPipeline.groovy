@@ -19,7 +19,7 @@ pipeline
 				script
 				{
 					echo "Initialize"
-					slackUtils = new org.BRG.SlackUtils(env)
+					slackUtils = new org.BRG.SlackUtils(this)
 					slackUtils.PostStatusToSlack()
 				}
 			}
