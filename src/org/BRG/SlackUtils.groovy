@@ -21,19 +21,19 @@ class SlackUtils
 
 	def PostStatusToSlack()
 	{
-		def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID}: ${GetAllStagesStatus()}"
+		def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID}: ${context.GetAllStagesStatus()}"
 		UpdateSlackMessage(updateMessage.toString(), 'CCCCCC')
 		echo updateMessage
 	}
 
 	def UpdateSlackMessage(message, color) 
 	{
-		context.slackSend(channel: slackResponse.threadId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
+		context.slackSend(channel: slackResponse.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
 	}
 
 	def PostToSlackThread(message, color) 
 	{
-		context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
+		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
 	}
 
 	def UploadToSlackMessage(filePath) 
