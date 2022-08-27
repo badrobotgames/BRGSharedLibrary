@@ -98,7 +98,7 @@ class SlackUtils
 			)
 		}
 
-		echo "${blocks}"
+		context.echo "${blocks}"
 		PostBlockToThread(blocks)
 	}
 
