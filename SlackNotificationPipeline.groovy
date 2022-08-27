@@ -10,6 +10,8 @@ pipeline
 		booleanParam name: 'FAIL', defaultValue: false, description: 'Test a failure'
 
 		
+		text name: 'PERFORCE_SHELVES', defaultValue: '', description: 'To make a build against a given shelved Changelist, list each CL number on a new line.'
+
 		choice name: 'EditorConfiguration', choices: ['Development', 'Debug', 'DebugGame', 'Shipping', 'Test']
 		booleanParam name: 'BUILD_EDITOR', defaultValue: true, description: 'Probably always want this set?'
 		booleanParam name: 'ALLOW_DEPLOY_EDITOR', defaultValue: true, description: 'Deploy editor to UGS after building it if there are code changes (requires BUILD_EDITOR)'
