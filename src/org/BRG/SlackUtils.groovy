@@ -56,11 +56,11 @@ class SlackUtils
 		blocks = [
 			[
 				"type": "header",
-				"text": {
+				"text": [
 					"type": "plain_text",
 					"text": "Parameters",
 					"emoji": true
-				}
+				]
 			]
 		]
 		
@@ -77,14 +77,14 @@ class SlackUtils
 				[
 					"type": "section",
 					"fields": [
-						{
+						[
 							"type": "mrkdwn",
 							"text": paramName
-						},
-						{
+						],
+						[
 							"type": "mrkdwn",
 							"text": "${paramValue}"
-						}
+						]
 					]
 				]
 			)
