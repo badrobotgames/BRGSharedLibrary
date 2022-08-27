@@ -38,7 +38,7 @@ class SlackUtils
 
 	def PostBlockToThread(blocks) 
 	{
-		context.slackSend(channel: slackMessage.threadId, blocks: blocks)
+		context.slackSend(channel: 'invasion-builds', blocks: blocks)
 	}
 
 	def UploadToMessage(filePath) 
