@@ -64,7 +64,7 @@ class SlackUtils
 			changesFields.add(
 				[
 					"type": "mrkdwn",
-					"text": "${changesMessage}\nCL${CL} by ${Author} - ${Description}"
+					"text": "CL${CL} by ${Author} - ${Description}"
 				]
 			)
 		}
