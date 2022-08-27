@@ -28,7 +28,7 @@ class SlackUtils
 
 	def UpdateSlackMessage(message, color) 
 	{
-		context.slackSend(channel: slackResponse.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
+		context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
 	}
 
 	def PostToSlackThread(message, color) 
