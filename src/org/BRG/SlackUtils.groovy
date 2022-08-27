@@ -99,6 +99,7 @@ class SlackUtils
 			)
 		}
 
+		echo "${blocks}"
 		PostBlockToThread(blocks)
 	}
 
