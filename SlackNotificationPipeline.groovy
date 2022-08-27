@@ -19,7 +19,7 @@ pipeline
 				script
 				{
 					echo "Initialize"
-					slackUtils = new org.BRG.SlackUtils(env: env)
+					slackUtils = new org.BRG.SlackUtils(env)
 					slackUtils.PostStatusToSlack()
 				}
 			}
@@ -43,7 +43,7 @@ pipeline
 			{			
 				script
 				{
-					echo 'Step 1'
+					echo 'Step 2'
 					slackUtils.PostStatusToSlack()
 				}
 			}

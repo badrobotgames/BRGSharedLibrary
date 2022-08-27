@@ -7,8 +7,9 @@ class SlackUtils
 	def env
 	def SlackResponse slackMessage
 
-	SlackUtils() 
+	SlackUtils(env) 
 	{
+		this.env = env
 		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: "${color}".toString())
 	}
 
