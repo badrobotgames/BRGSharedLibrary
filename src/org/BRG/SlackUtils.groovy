@@ -26,21 +26,6 @@ class SlackUtils
 		UpdateMessage(updateMessage.toString(), 'CCCCCC')
 	}
 
-	def PostParameters()
-	{
-		String paramsMessage = 'PARAMETERS'
-		context.params.each { param ->
-			def paramName = param.key.replaceAll("[\r\n]+", "")
-			def paramValue = param.value
-			if(paramValue.getClass() == String)
-			{
-				paramValue = paramValue.replaceAll("[\r\n]+", "")
-			}
-			paramsMessage = "${paramsMessage},  ${paramName}(${paramValue})".toString()
-		}
-		PostToThread(paramsMessage, '777777')
-	}
-
 	def UpdateMessage(message, color) 
 	{
 		context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
@@ -51,6 +36,11 @@ class SlackUtils
 		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString(), color: "${color}".toString())
 	}
 
+	def PostBlockToThread(blocks, color) 
+	{
+		context.slackSend(channel: slackMessage.threadId, blocks: blocks)
+	}
+
 	def UploadToMessage(filePath) 
 	{
 		context.slackUploadFile(channel: slackMessage.channelId, filePath: filePath, timestamp: slackMessage.ts)
@@ -59,5 +49,47 @@ class SlackUtils
 	def UploadToThread(filePath) 
 	{
 		context.slackUploadFile(channel: 'invasion-builds:' + slackMessage.ts, filePath: filePath)
+	}
+
+	def PostParameters()
+	{
+		blocks = [
+			[
+				"type": "header",
+				"text": {
+					"type": "plain_text",
+					"text": "Parameters",
+					"emoji": true
+				}
+			]
+		]
+		
+		String paramsMessage = 'PARAMETERS'
+		context.params.each { param ->
+			def paramName = param.key.replaceAll("[\r\n]+", "")
+			def paramValue = param.value
+			if(paramValue.getClass() == String)
+			{
+				paramValue = paramValue.replaceAll("[\r\n]+", "")
+			}
+			paramsMessage = "${paramsMessage},  ${paramName}(${paramValue})".toString()
+			blocks.add(
+				[
+					"type": "section",
+					"fields": [
+						{
+							"type": "mrkdwn",
+							"text": paramName
+						},
+						{
+							"type": "mrkdwn",
+							"text": "${paramValue}"
+						}
+					]
+				]
+			)
+		}
+		
+		PostBlockToThread(paramsMessage)
 	}
 }
