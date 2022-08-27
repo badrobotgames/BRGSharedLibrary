@@ -10,7 +10,7 @@ class SlackUtils
 	SlackUtils(env) 
 	{
 		this.env = env
-		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: "${color}".toString())
+		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: 'CCCCCC')
 	}
 
 	def PostStatusToSlack()
