@@ -52,22 +52,7 @@ class SlackUtils
 
 	def PostChanges(lastSuccessCL, changes)
 	{
-		def startedReason = context.currentBuild.getBuildCauses()
 		def specificCause = context.currentBuild.getBuildCauses()[0].shortDescription.toString().replace('[', '').replace(']', '')
-
-		def changesFields = []
-		for(def item : changes)
-		{
-			String changlist = item.get('change').toString()
-			String author = item.get('user').toString()
-			String description = item.get('desc').toString().replaceAll("[\r\n]+", "")
-			changesFields.add(
-				[
-					"type": "mrkdwn",
-					"text": "CL${changlist} by ${author} - ${description}"
-				]
-			)
-		}
 
 		def blocks = [
 			[
@@ -87,12 +72,32 @@ class SlackUtils
 						"text": "Building changes since ${lastSuccessCL}"
 					],
 				]
-			],
-			[
-				"type": "section",
-				"fields": changesFields		
 			]
 		]
+
+		if(changes.size() > 0)
+		{
+			def changesFields = []
+			for(def item : changes)
+			{
+				String changlist = item.get('change').toString()
+				String author = item.get('user').toString()
+				String description = item.get('desc').toString().replaceAll("[\r\n]+", "")
+				changesFields.add(
+					[
+						"type": "mrkdwn",
+						"text": "CL${changlist} by ${author} - ${description}"
+					]
+				)
+			}
+
+			blocks.add(
+				[
+					"type": "section",
+					"fields": changesFields		
+				]
+			)
+		}
 
 		PostBlockToThread(blocks)
 	}
