@@ -4,13 +4,15 @@ import jenkins.plugins.slack.workflow.SlackResponse
 
 class SlackUtils
 {
+	def context
 	def env
 	def SlackResponse slackMessage
 
-	SlackUtils(env) 
+	SlackUtils(context) 
 	{
-		this.env = env
-		slackMessage = slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: 'CCCCCC')
+		this.context = context
+		this.env = context.env
+		slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: 'CCCCCC')
 	}
 
 	def PostStatusToSlack()
@@ -22,16 +24,16 @@ class SlackUtils
 
 	def UpdateSlackMessage(message, color) 
 	{
-		slackSend(channel: slackResponse.threadId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
+		context.slackSend(channel: slackResponse.threadId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
 	}
 
 	def PostToSlackThread(message, color) 
 	{
-		slackSend(channel: slackMessage.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
+		context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
 	}
 
 	def UploadToSlackMessage(filePath) 
 	{
-		slackUploadFile(channel: slackMessage.channelId, filePath: filePath, timestamp: slackMessage.ts)
+		context.slackUploadFile(channel: slackMessage.channelId, filePath: filePath, timestamp: slackMessage.ts)
 	}
 }
