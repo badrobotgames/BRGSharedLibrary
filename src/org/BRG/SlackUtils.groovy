@@ -141,7 +141,7 @@ class SlackUtils
 				]
 			)
 		}
-		context.echo blocks
+		context.echo blocks.toString()
 		PostBlockToThread(blocks)
 	}
 
