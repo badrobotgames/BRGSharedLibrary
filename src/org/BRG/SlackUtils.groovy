@@ -57,7 +57,8 @@ class SlackUtils
 		def blocks = [
 			[
 				"type": "header",
-				"text": [
+				"text": 
+				[
 					"type": "plain_text",
 					"text": "${specificCause}",
 					"emoji": true
@@ -67,10 +68,8 @@ class SlackUtils
 				"type": "section",
 				"text": 
 				[
-					[
-						"type": "mrkdwn",
-						"text": "Building changes since ${lastSuccessCL}"
-					],
+					"type": "mrkdwn",
+					"text": "Building changes since ${lastSuccessCL}"
 				]
 			]
 		]
