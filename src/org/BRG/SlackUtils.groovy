@@ -38,7 +38,7 @@ class SlackUtils
 
 	def PostBlockToThread(blocks) 
 	{
-		context.slackSend(channel: 'invasion-builds', blocks: blocks)
+		context.slackSend(channel: slackMessage.threadId, blocks: blocks)
 	}
 
 	def UploadToMessage(filePath) 
@@ -69,12 +69,12 @@ class SlackUtils
 			def paramValue = param.value
 			if(paramValue.getClass() == String)
 			{
-				paramValue = paramValue.replaceAll("[\r\n]+", ", ")
+				paramValue = paramValue.replaceAll("[\r\n]+", ",")
 			}
 			blocks.add(
 				[
-					"type": "section",
-					"fields": [
+					"type": "context",
+					"elements": [
 						[
 							"type": "mrkdwn",
 							"text": paramName
