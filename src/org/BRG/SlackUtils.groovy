@@ -48,7 +48,7 @@ class SlackUtils
 
 	def PostToThread(message, color) 
 	{
-		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
+		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString(), color: "${color}".toString())
 	}
 
 	def UploadToMessage(filePath) 
