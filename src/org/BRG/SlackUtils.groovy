@@ -119,17 +119,16 @@ class SlackUtils
 		
 		context.params.each { param ->
 			def paramName = param.key.replaceAll("[\r\n]+", "")
-			def paramValue = param.value
-			if(paramValue.getClass() == String)
+			def paramValue = "${param.value}"
+			paramValue = paramValue.replaceAll("[\r\n]+", ",")
+			
+			if(paramValue && !paramValue.allWhitespace)
 			{
-				paramValue = paramValue.replaceAll("[\r\n]+", ",")
+				paramValue = 'NULL'
 			}
+			
 			if(paramName && !paramName.allWhitespace)
 			{
-				if(paramValue && !paramValue.allWhitespace)
-				{
-					paramValue = 'NULL'
-				}
 				blocks.add(
 					[
 						"type": "context",
@@ -141,7 +140,7 @@ class SlackUtils
 							],
 							[
 								"type": "mrkdwn",
-								"text": "${paramValue}"
+								"text": paramValue
 							]
 						]
 					]
