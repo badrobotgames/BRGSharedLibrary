@@ -122,12 +122,12 @@ class SlackUtils
 			def paramValue = "${param.value}"
 			paramValue = paramValue.replaceAll("[\r\n]+", ",")
 			
-			if(paramValue?.trim())
+			if(paramValue == null || paramValue.isEmpty())
 			{
 				paramValue = 'NULL'
 			}
 			
-			if(paramName?.trim())
+			if(paramName != null && !paramName.isEmpty())
 			{
 				blocks.add(
 					[
