@@ -22,6 +22,33 @@ pipeline
 					slackUtils = new org.BRG.SlackUtils(this)
 					slackUtils.Initialize()
 					slackUtils.PostStatus()
+
+					changes = 
+					[
+						[
+							'change': 323,
+							'user': 'kara',
+							'desc': 'this is a change'
+						],
+						[
+							'change': 3323,
+							'user': 'jenkins',
+							'desc': 'this ifdsafsas a change'
+						],
+						[
+							'change': 3423,
+							'user': 'kara',
+							'desc': 'this is a chafdsafnge'
+						],
+						[
+							'change': 2323,
+							'user': 'blarg',
+							'desc': 'this is afsdafs change'
+						]
+					]
+					slackUtils.PostChanges(100, changes)
+
+					slackUtils.PostParameters()
 					sleep 1
 				}
 			}

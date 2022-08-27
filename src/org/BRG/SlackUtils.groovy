@@ -17,7 +17,6 @@ class SlackUtils
 	def Initialize()
 	{
 		slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: '777777')
-		PostParameters()
 	}
 
 	def PostStatus()
@@ -51,6 +50,51 @@ class SlackUtils
 		context.slackUploadFile(channel: 'invasion-builds:' + slackMessage.ts, filePath: filePath)
 	}
 
+	def PostChanges(lastSuccessCL, changes)
+	{
+		def startedReason = context.currentBuild.getBuildCauses()
+		def specificCause = context.currentBuild.getBuildCauses()[0].shortDescription.toString().replace('[', '').replace(']', '')
+
+		def changesFields = []
+		for(def item : changes)
+		{
+			String changlist = item.get('change').toString()
+			String author = item.get('user').toString()
+			String description = item.get('desc').toString().replaceAll("[\r\n]+", "")
+			changesFields.add(
+				[
+					"type": "mrkdwn",
+					"text": "${changesMessage}\nCL${CL} by ${Author} - ${Description}"
+				]
+			)
+		}
+
+		def blocks = [
+			[
+				"type": "header",
+				"text": [
+					"type": "plain_text",
+					"text": "${specificCause}",
+					"emoji": true
+				]
+			],
+			[
+				"type": "section",
+				"text": 
+				[
+					[
+						"type": "mrkdwn",
+						"text": "Building changes since ${lastSuccessCL}"
+					],
+				]
+			],
+			[
+				"type": "section",
+				"fields": changesFields		
+			]
+		]
+	}
+
 	def PostParameters()
 	{
 		def blocks = [
@@ -74,7 +118,8 @@ class SlackUtils
 			blocks.add(
 				[
 					"type": "context",
-					"elements": [
+					"elements":
+					[
 						[
 							"type": "mrkdwn",
 							"text": paramName
