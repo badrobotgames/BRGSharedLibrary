@@ -22,17 +22,18 @@ class SlackUtils
 	def PostStatus()
 	{
 		def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID}: ${context.GetAllStagesStatus()}"
-		UpdateMessage(updateMessage.toString(), 'CCCCCC')
+		UpdateMessage(updateMessage.toString())
 	}
 
-	def UpdateMessage(message, color) 
+	def UpdateMessage(message) 
 	{
-		context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
+		context.echo message
+		context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), timestamp: slackMessage.ts)
 	}
 
-	def PostToThread(message, color) 
+	def PostToThread(message) 
 	{
-		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString(), color: "${color}".toString())
+		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString())
 	}
 
 	def PostBlockToThread(blocks) 
@@ -54,7 +55,8 @@ class SlackUtils
 	{
 		def specificCause = context.currentBuild.getBuildCauses()[0].shortDescription.toString().replace('[', '').replace(']', '')
 
-		def blocks = [
+		def blocks = 
+		[
 			[
 				"type": "header",
 				"text": 
@@ -98,13 +100,13 @@ class SlackUtils
 			)
 		}
 
-		context.echo "${blocks}"
 		PostBlockToThread(blocks)
 	}
 
 	def PostParameters()
 	{
-		def blocks = [
+		def blocks = 
+		[
 			[
 				"type": "header",
 				"text": [
@@ -140,6 +142,41 @@ class SlackUtils
 			)
 		}
 		
+		PostBlockToThread(blocks)
+	}
+
+	def PostShelfList(shelfList)
+	{
+		def shelfFields = []
+		for(def shelf : shelfList)
+		{
+			def shelfItem = context.p4.run('describe', '-S', shelf)[0] //Describe returns an array of dictionaries. One for each changelist. But since were only passing on than we only need sub 0
+			String author = shelfItem.get('user').toString()
+			String description = shelfItem.get('desc').toString().replaceAll("[\r\n]+", "")
+			changesFields.add(
+				[
+					"type": "mrkdwn",
+					"text": "CL${shelf} by ${author} - ${description}"
+				]
+			)
+		}
+		
+		def blocks = [
+			[
+				"type": "header",
+				"text": 
+				[
+					"type": "plain_text",
+					"text": "Unshelving revisions from the following shelved changelists:",
+					"emoji": true
+				]
+			],
+			[
+				"type": "section",
+				"fields": changesFields		
+			]
+		]
+
 		PostBlockToThread(blocks)
 	}
 }
