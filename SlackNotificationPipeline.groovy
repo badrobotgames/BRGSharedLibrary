@@ -22,7 +22,7 @@ pipeline
 					slackUtils = new org.BRG.SlackUtils(this)
 					slackUtils.Initialize()
 					slackUtils.PostStatus()
-					sleep 10s
+					sleep 10
 				}
 			}
 		}	
@@ -35,7 +35,7 @@ pipeline
 				{
 					echo 'Step 1'
 					slackUtils.PostStatus()
-					sleep 11s
+					sleep 11
 				}
 			}
 		}	
@@ -48,7 +48,7 @@ pipeline
 				{
 					echo 'Step 2'
 					slackUtils.PostStatus()
-					sleep 12s
+					sleep 12
 				}
 			}
 		}
@@ -59,7 +59,7 @@ pipeline
 			{
 				expression
 				{
-					params.SKIP == true
+					params.SKIP != true
 				}
 			}
 			steps
@@ -68,7 +68,7 @@ pipeline
 				{
 					echo 'Step 3'
 					slackUtils.PostStatus()
-					sleep 13s
+					sleep 13
 				}
 			}
 		}
@@ -83,7 +83,7 @@ pipeline
 					{
 						error("This pipeline stops here!")
 					}
-					sleep 14s
+					sleep 14
 				}
 			}
 		}
