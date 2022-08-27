@@ -20,6 +20,7 @@ pipeline
 				{
 					echo "Initialize"
 					slackUtils = new org.BRG.SlackUtils(this)
+					slackUtils.Initialize()
 					slackUtils.PostStatusToSlack()
 				}
 			}

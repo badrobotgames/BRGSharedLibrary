@@ -12,10 +12,8 @@ class SlackUtils
 	{
 		this.context = context
 		this.env = context.env
-		Initialize()
 	}
 
-	@NonCPS
 	def Initialize()
 	{
 		slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: 'CCCCCC')
