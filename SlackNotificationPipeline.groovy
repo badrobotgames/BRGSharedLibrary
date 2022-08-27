@@ -21,7 +21,7 @@ pipeline
 					echo "Initialize"
 					slackUtils = new org.BRG.SlackUtils(this)
 					slackUtils.Initialize()
-					slackUtils.PostStatusToSlack()
+					slackUtils.PostStatus()
 				}
 			}
 		}	
@@ -33,7 +33,7 @@ pipeline
 				script
 				{
 					echo 'Step 1'
-					slackUtils.PostStatusToSlack()
+					slackUtils.PostStatus()
 				}
 			}
 		}	
@@ -45,7 +45,7 @@ pipeline
 				script
 				{
 					echo 'Step 2'
-					slackUtils.PostStatusToSlack()
+					slackUtils.PostStatus()
 				}
 			}
 		}
@@ -64,7 +64,7 @@ pipeline
 				script
 				{
 					echo 'Step 3'
-					slackUtils.PostStatusToSlack()
+					slackUtils.PostStatus()
 				}
 			}
 		}
@@ -90,7 +90,7 @@ pipeline
 		{			
 			script
 			{
-				slackUtils.PostStatusToSlack()
+				slackUtils.PostStatus()
 			}
 		}
 		failure
@@ -98,7 +98,7 @@ pipeline
 			script
 			{
 				sh("cp \"${env.JENKINS_HOME}/jobs/${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/log\" console-log.txt".toString())
-				slackUtils.UploadToSlackMessage('console-log.txt')
+				slackUtils.UploadToThread('console-log.txt')
 			}
 		}
 	}

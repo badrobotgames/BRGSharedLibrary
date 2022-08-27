@@ -19,24 +19,29 @@ class SlackUtils
 		slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: 'CCCCCC')
 	}
 
-	def PostStatusToSlack()
+	def PostStatus()
 	{
 		def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID}: ${context.GetAllStagesStatus()}"
 		UpdateSlackMessage(updateMessage.toString(), 'CCCCCC')
 	}
 
-	def UpdateSlackMessage(message, color) 
+	def UpdateMessage(message, color) 
 	{
 		context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
 	}
 
-	def PostToSlackThread(message, color) 
+	def PostToThread(message, color) 
 	{
 		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString(), color: "${color}".toString(), timestamp: slackMessage.ts)
 	}
 
-	def UploadToSlackMessage(filePath) 
+	def UploadToMessage(filePath) 
 	{
 		context.slackUploadFile(channel: slackMessage.channelId, filePath: filePath, timestamp: slackMessage.ts)
+	}
+
+	def UploadToThread(filePath) 
+	{
+		context.slackUploadFile(channel: 'invasion-builds' + slackMessage.ts, filePath: filePath)
 	}
 }
