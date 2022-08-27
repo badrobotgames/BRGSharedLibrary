@@ -124,25 +124,32 @@ class SlackUtils
 			{
 				paramValue = paramValue.replaceAll("[\r\n]+", ",")
 			}
-			blocks.add(
-				[
-					"type": "context",
-					"elements":
+			if(paramName && !paramName.allWhitespace)
+			{
+				if(paramValue && !paramValue.allWhitespace)
+				{
+					paramValue = 'NULL'
+				}
+				blocks.add(
 					[
+						"type": "context",
+						"elements":
 						[
-							"type": "mrkdwn",
-							"text": paramName
-						],
-						[
-							"type": "mrkdwn",
-							"text": "${paramValue}"
+							[
+								"type": "mrkdwn",
+								"text": paramName
+							],
+							[
+								"type": "mrkdwn",
+								"text": "${paramValue}"
+							]
 						]
 					]
-				]
-			)
+				)
+			}
 		}
-		context.echo context.params.toString()
-		context.echo blocks.toString()
+		//context.echo context.params.toString()
+		//context.echo blocks.toString()
 		PostBlockToThread(blocks)
 	}
 
