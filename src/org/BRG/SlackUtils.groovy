@@ -30,8 +30,8 @@ class SlackUtils
 	{
 		String paramsMessage = 'PARAMETERS'
 		context.params.each { param ->
-			paramName = param.key.replaceAll("[\r\n]+", "")
-			paramValue = param.value
+			def paramName = param.key.replaceAll("[\r\n]+", "")
+			def paramValue = param.value
 			if(paramValue.getClass() == String)
 			{
 				paramValue = paramValue.replaceAll("[\r\n]+", "")
