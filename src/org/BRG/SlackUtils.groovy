@@ -4,7 +4,8 @@ import jenkins.plugins.slack.workflow.SlackResponse
 
 class SlackUtils
 {
-	SlackResponse slackMessage
+	def env
+	def SlackResponse slackMessage
 
 	SlackUtils() 
 	{
