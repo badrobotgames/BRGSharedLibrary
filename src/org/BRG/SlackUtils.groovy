@@ -8,7 +8,7 @@ class SlackUtils
 	def env
 	def SlackResponse slackMessage
 	def allowSlackSend //Used for debugging without clogging up invasion-builds
-	def lastSuccessCL
+	def lastSuccessCL = "UNSET"
 	def changes
 
 	SlackUtils(context, allowSlackSend = true) 
@@ -128,7 +128,7 @@ class SlackUtils
 		def specificCause = context.currentBuild.getBuildCauses()[0].shortDescription.toString().replace('[', '').replace(']', '')
 
 		def changesText = "*Building changes since ${lastSuccessCL}*"
-		if(changes.size() > 0)
+		if(changes && changes.size() > 0)
 		{
 			for(def item : changes)
 			{
