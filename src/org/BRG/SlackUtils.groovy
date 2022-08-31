@@ -168,7 +168,7 @@ class SlackUtils
 
 		blocks.addAll(context.GetAllStagesStatusBlocks())
 
-		UpdateMessageBlocks(updateMessage.toString(), GetStatusColor())
+		UpdateMessageBlocks(blocks, GetStatusColor())
 	}
 
 	def PostParameters()
