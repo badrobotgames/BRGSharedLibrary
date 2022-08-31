@@ -22,7 +22,19 @@ class SlackUtils
 	{
 		if(allowSlackSend)
 		{
-			slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: GetStatusColor())
+			def blocks = 
+			[
+				[
+					"type": "header",
+					"text": 
+					[
+						"type": "plain_text",
+						"text": "${env.JOB_NAME}_${env.BUILD_ID}: Initializing",
+						"emoji": true
+					]
+				]
+			]
+			slackMessage = context.slackSend(channel: 'invasion-builds', blocks: blocks, color: GetStatusColor())
 		}
 		else
 		{
