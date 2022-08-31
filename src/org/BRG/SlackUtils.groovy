@@ -96,15 +96,15 @@ class SlackUtils
 		}
 	}
 
-	def UploadToThread(filePath) 
+	def UploadToThread(filePath, message = '') 
 	{
 		if(allowSlackSend)
 		{
-			context.slackUploadFile(channel: 'invasion-builds:' + slackMessage.ts, filePath: filePath)
+			context.slackUploadFile(channel: 'invasion-builds:' + slackMessage.ts, filePath: filePath, initialComment:  message)
 		}
 		else
 		{
-			context.echo "UploadToThread(${filePath})".toString()
+			context.echo "UploadToThread(${filePath}) message(${message})".toString()
 		}
 	}
 

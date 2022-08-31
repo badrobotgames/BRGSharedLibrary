@@ -156,7 +156,7 @@ pipeline
 			script
 			{
 				sh("cp \"${env.JENKINS_HOME}/jobs/${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/log\" console-log.txt".toString())
-				slackUtils.UploadToThread('console-log.txt')
+				slackUtils.UploadToThread('console-log.txt', 'Build Failed!')
 			}
 		}
 	}
