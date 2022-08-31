@@ -166,7 +166,7 @@ class SlackUtils
 			]
 		]
 
-		blocks.addAll(GetAllStagesStatusBlocks())
+		blocks.addAll(context.GetAllStagesStatusBlocks())
 
 		UpdateMessageBlocks(updateMessage.toString(), GetStatusColor())
 	}
