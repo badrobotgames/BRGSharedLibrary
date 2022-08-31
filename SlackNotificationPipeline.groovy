@@ -149,7 +149,7 @@ pipeline
 		{			
 			script
 			{
-				slackUtils.PostStatus()
+				slackUtils.PostFinalStatus()
 			}
 		}
 		failure

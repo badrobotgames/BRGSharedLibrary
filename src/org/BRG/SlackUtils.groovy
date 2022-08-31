@@ -42,20 +42,6 @@ class SlackUtils
 		}
 	}
 
-	def GetStatusColor()
-	{
-        switch(context.currentBuild.previousBuild.result)
-		{
-			case 'SUCCESS':
-				return '32a852'
-			case 'UNSTABLE':
-				return 'e4be3a'
-			case 'FAILURE':
-				return 'CC1111'
-		}
-		return '777777'
-	}
-
 	def UpdateMessage(message, color) 
 	{
 		if(allowSlackSend)
@@ -68,15 +54,15 @@ class SlackUtils
 		}
 	}
 
-	def UpdateMessageBlocks(blocks, color) 
+	def UpdateMessageBlocks(blocks) 
 	{
 		if(allowSlackSend)
 		{
-			context.slackSend(channel: slackMessage.channelId, blocks: blocks, timestamp: slackMessage.ts, color: color)
+			context.slackSend(channel: slackMessage.channelId, blocks: blocks, timestamp: slackMessage.ts)
 		}
 		else
 		{
-			context.echo "UpdateMessageBlocks(${blocks}) color(${color})".toString()
+			context.echo "UpdateMessageBlocks(${blocks}))".toString()
 		}
 	}
 
@@ -180,7 +166,78 @@ class SlackUtils
 
 		blocks.addAll(context.GetAllStagesStatusBlocks())
 
-		UpdateMessageBlocks(blocks, GetStatusColor())
+		UpdateMessageBlocks(blocks)
+	}
+
+	def PostFinalStatus()
+	{
+		def specificCause = context.currentBuild.getBuildCauses()[0].shortDescription.toString().replace('[', '').replace(']', '')
+
+		def changesText = "*Building changes since ${lastSuccessCL}*"
+		if(changes && changes.size() > 0)
+		{
+			for(def item : changes)
+			{
+				String changlist = item.get('change').toString()
+				String author = item.get('user').toString()
+				String description = item.get('desc').toString().replaceAll("[\r\n]+", "")
+				changesText = "${changesText}/nCL-${changlist} by ${author}: ${description}"
+			}
+		}
+
+		def statusIcon = 'white_circle'
+		switch(context.currentBuild.currentResult)
+		{
+			case 'SUCCESS':
+				statusIcon = 'large_green_circle'
+				break
+			case 'UNSTABLE':
+				statusIcon = 'yellow_cicle'
+				break;
+			case 'FAILURE':
+				statusIcon = 'red_circle'
+				break
+			case 'ABORTED':
+				statusIcon = 'white_circle'
+				break
+		}
+
+		def blocks = 
+		[
+			[
+				"type": "header",
+				"text": 
+				[
+					"type": "plain_text",
+					"text": "${env.JOB_NAME}_${env.BUILD_ID}: ${specificCause}",
+					"emoji": true
+				]
+			],
+			[
+				"type": "divider"
+			],
+			[
+				"type": "section",
+				"text": 
+				[
+					"type": "mrkdwn",
+					"text": changesText
+				]
+			],
+			[
+				"type": "divider"
+			],
+			[
+				"type": "section",
+				"text": 
+				[
+					"type": "mrkdwn",
+					"text": ":${statusIcon}: Build finished with result ${context.currentBuild.currentResult}"
+				]
+			]
+		]
+
+		UpdateMessageBlocks(blocks)
 	}
 
 	def PostParameters()
