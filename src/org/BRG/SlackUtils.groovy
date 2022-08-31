@@ -133,7 +133,7 @@ class SlackUtils
 				String changlist = item.get('change').toString()
 				String author = item.get('user').toString()
 				String description = item.get('desc').toString().replaceAll("[\r\n]+", "")
-				changesText = "${changesText}/nCL-${changlist} by ${author}: ${description}"
+				changesText = "${changesText}\nCL-${changlist} by ${author}: ${description}"
 			}
 		}
 
