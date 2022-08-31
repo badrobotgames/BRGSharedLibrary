@@ -30,7 +30,7 @@ class SlackUtils
 
 	def GetStatusColor()
 	{
-        switch(context.currentBuild.currentResult)
+        switch(context.currentBuild.previousBuild.result)
 		{
 			case 'SUCCESS':
 				return '32a852'
