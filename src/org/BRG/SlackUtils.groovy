@@ -8,6 +8,8 @@ class SlackUtils
 	def env
 	def SlackResponse slackMessage
 	def allowSlackSend //Used for debugging without clogging up invasion-builds
+	def lastSuccessCL
+	def changes
 
 	SlackUtils(context, allowSlackSend = true) 
 	{
