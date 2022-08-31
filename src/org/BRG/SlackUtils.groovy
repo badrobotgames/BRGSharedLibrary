@@ -34,7 +34,7 @@ class SlackUtils
 					]
 				]
 			]
-			slackMessage = context.slackSend(channel: 'invasion-builds', blocks: blocks, color: GetStatusColor())
+			slackMessage = context.slackSend(channel: 'invasion-builds', blocks: blocks)
 		}
 		else
 		{
