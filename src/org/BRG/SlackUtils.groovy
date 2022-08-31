@@ -7,48 +7,105 @@ class SlackUtils
 	def context
 	def env
 	def SlackResponse slackMessage
+	def allowSlackSend //Used for debugging without clogging up invasion-builds
 
-	SlackUtils(context) 
+	SlackUtils(context, allowSlackSend = true) 
 	{
 		this.context = context
 		this.env = context.env
+		this.allowSlackSend = allowSlackSend
 	}
 
 	def Initialize()
 	{
-		slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: '777777')
+		if(allowSlackSend)
+		{
+			slackMessage = context.slackSend(channel: 'invasion-builds', message: "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString(), color: GetStatusColor())
+		}
+		else
+		{
+			context.echo "${env.JOB_NAME}_${env.BUILD_ID}: Initializing color(${GetStatusColor()})".toString()
+		}
+	}
+
+	def GetStatusColor()
+	{
+        switch(currentBuild.currentResult)
+		{
+			case 'SUCCESS':
+				return '32a852'
+			case 'UNSTABLE':
+				return 'e4be3a'
+			case 'FAILURE':
+				return 'CC1111'
+		}
+		return '777777'
 	}
 
 	def PostStatus()
 	{
 		def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID}: ${context.GetAllStagesStatus()}"
-		UpdateMessage(updateMessage.toString())
+		UpdateMessage(updateMessage.toString(), GetStatusColor())
 	}
 
-	def UpdateMessage(message) 
+	def UpdateMessage(message, color) 
 	{
-		context.echo message
-		context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), timestamp: slackMessage.ts)
+		if(allowSlackSend)
+		{
+			context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), timestamp: slackMessage.ts)
+		}
+		else
+		{
+			context.echo "UpdateMessage(${message}) color(${color})".toString()
+		}
 	}
 
 	def PostToThread(message) 
 	{
-		context.slackSend(channel: slackMessage.threadId, message: "${message}".toString())
+		if(allowSlackSend)
+		{
+			context.slackSend(channel: slackMessage.threadId, message: "${message}".toString())
+		}
+		else
+		{
+			context.echo "PostToThread(${message})".toString()
+		}
 	}
 
 	def PostBlockToThread(blocks) 
 	{
-		context.slackSend(channel: slackMessage.threadId, blocks: blocks)
+		if(allowSlackSend)
+		{
+			context.slackSend(channel: slackMessage.threadId, blocks: blocks)
+		}
+		else
+		{
+			context.echo "PostBlockToThread(${blocks})".toString()
+		}
 	}
 
 	def UploadToMessage(filePath) 
 	{
-		context.slackUploadFile(channel: slackMessage.channelId, filePath: filePath, timestamp: slackMessage.ts)
+		if(allowSlackSend)
+		{
+			context.slackUploadFile(channel: slackMessage.channelId, filePath: filePath, timestamp: slackMessage.ts)
+		}
+		else
+		{
+			context.echo "UploadToMessage(${filePath})".toString()
+		}
 	}
 
 	def UploadToThread(filePath) 
 	{
-		context.slackUploadFile(channel: 'invasion-builds:' + slackMessage.ts, filePath: filePath)
+		if(allowSlackSend)
+		{
+			context.slackUploadFile(channel: 'invasion-builds:' + slackMessage.ts, filePath: filePath)
+		}
+		else
+		{
+			context.echo "UploadToThread(${filePath})".toString()
+		}
 	}
 
 	def PostChanges(lastSuccessCL, changes)
@@ -147,8 +204,7 @@ class SlackUtils
 				)
 			}
 		}
-		//context.echo context.params.toString()
-		//context.echo blocks.toString()
+		
 		PostBlockToThread(blocks)
 	}
 
