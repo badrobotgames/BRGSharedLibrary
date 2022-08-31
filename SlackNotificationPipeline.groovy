@@ -45,7 +45,7 @@ pipeline
 				script
 				{
 					echo "Initialize"
-					slackUtils = new org.BRG.SlackUtils(this, false)
+					slackUtils = new org.BRG.SlackUtils(this, true)
 					slackUtils.Initialize()
 					slackUtils.PostStatus()
 
@@ -72,7 +72,8 @@ pipeline
 							'desc': 'this is afsdafs change'
 						]
 					]
-					slackUtils.PostChanges(100, changes)
+					slackUtils.SetChanges(100, changes)
+					slackUtils.PostStatus()
 
 					slackUtils.PostParameters()
 					sleep 1

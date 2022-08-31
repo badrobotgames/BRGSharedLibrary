@@ -42,21 +42,27 @@ class SlackUtils
 		return '777777'
 	}
 
-	def PostStatus()
-	{
-		def updateMessage = "${env.JOB_NAME}_${env.BUILD_ID}: ${context.GetAllStagesStatus()}"
-		UpdateMessage(updateMessage.toString(), GetStatusColor())
-	}
-
 	def UpdateMessage(message, color) 
 	{
 		if(allowSlackSend)
 		{
-			context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), timestamp: slackMessage.ts)
+			context.slackSend(channel: slackMessage.channelId, message: "${message}".toString(), timestamp: slackMessage.ts, color: color)
 		}
 		else
 		{
 			context.echo "UpdateMessage(${message}) color(${color})".toString()
+		}
+	}
+
+	def UpdateMessageBlocks(blocks, color) 
+	{
+		if(allowSlackSend)
+		{
+			context.slackSend(channel: slackMessage.channelId, blocks: blocks, timestamp: slackMessage.ts, color: color)
+		}
+		else
+		{
+			context.echo "UpdateMessageBlocks(${blocks}) color(${color})".toString()
 		}
 	}
 
@@ -108,9 +114,28 @@ class SlackUtils
 		}
 	}
 
-	def PostChanges(lastSuccessCL, changes)
+	def SetChanges(lastSuccessCL, changes)
+	{
+		this.lastSuccessCL = lastSuccessCL
+		this.changes = changes
+		PostStatus()
+	}
+
+	def PostStatus()
 	{
 		def specificCause = context.currentBuild.getBuildCauses()[0].shortDescription.toString().replace('[', '').replace(']', '')
+
+		def changesText = "*Building changes since ${lastSuccessCL}*"
+		if(changes.size() > 0)
+		{
+			for(def item : changes)
+			{
+				String changlist = item.get('change').toString()
+				String author = item.get('user').toString()
+				String description = item.get('desc').toString().replaceAll("[\r\n]+", "")
+				changesText = "${changesText}/nCL-${changlist} by ${author}: ${description}"
+			}
+		}
 
 		def blocks = 
 		[
@@ -119,45 +144,29 @@ class SlackUtils
 				"text": 
 				[
 					"type": "plain_text",
-					"text": "${specificCause}",
+					"text": "${env.JOB_NAME}_${env.BUILD_ID}: ${specificCause}",
 					"emoji": true
 				]
+			],
+			[
+				"type": "divider"
 			],
 			[
 				"type": "section",
 				"text": 
 				[
 					"type": "mrkdwn",
-					"text": "Building changes since ${lastSuccessCL}"
+					"text": changesText
 				]
+			],
+			[
+				"type": "divider"
 			]
 		]
 
-		if(changes.size() > 0)
-		{
-			def changesFields = []
-			for(def item : changes)
-			{
-				String changlist = item.get('change').toString()
-				String author = item.get('user').toString()
-				String description = item.get('desc').toString().replaceAll("[\r\n]+", "")
-				changesFields.add(
-					[
-						"type": "mrkdwn",
-						"text": "CL${changlist} by ${author} - ${description}"
-					]
-				)
-			}
+		blocks.addAll(GetAllStagesStatusBlocks())
 
-			blocks.add(
-				[
-					"type": "section",
-					"fields": changesFields		
-				]
-			)
-		}
-
-		PostBlockToThread(blocks)
+		UpdateMessageBlocks(updateMessage.toString(), GetStatusColor())
 	}
 
 	def PostParameters()
