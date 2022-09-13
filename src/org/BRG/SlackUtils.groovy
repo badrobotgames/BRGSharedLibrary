@@ -56,30 +56,23 @@ class SlackUtils
 
 	def PostProcessBlocks(blocks)
 	{
-		def newBlocks = [:]
 		def sectionCharacterLimit = 3000
 		for(def block : blocks)
 		{
 			def sectionCharacterCount = 0
 			if(block["type"] == "section")
 			{
-				def newSection = [:]
 				for(def item : block)
 				{
 					sectionCharacterCount += item.length()
 					if(sectionCharacterCount >= sectionCharacterLimit)
 					{
-						break;
+						blocks.remove(item)
 					}
-					newSection.add(item)	
 				}
-				newBlocks.add(newSection)
-			}
-			else
-			{
-				newBlocks.add(block)
 			}
 		}
+		return blocks
 	}
 
 	def UpdateMessageBlocks(blocks) 
