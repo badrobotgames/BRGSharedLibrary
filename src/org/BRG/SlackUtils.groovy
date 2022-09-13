@@ -54,8 +54,37 @@ class SlackUtils
 		}
 	}
 
+	def PostProcessBlocks(blocks)
+	{
+		def newBlocks = [:]
+		def sectionCharacterLimit = 3000
+		for(def block : blocks)
+		{
+			def sectionCharacterCount = 0
+			if(block["type"] == "section")
+			{
+				def newSection = [:]
+				for(def item : block)
+				{
+					sectionCharacterCount += item.length()
+					if(sectionCharacterCount >= sectionCharacterLimit)
+					{
+						break;
+					}
+					newSection.add(item)	
+				}
+				newBlocks.add(newSection)
+			}
+			else
+			{
+				newBlocks.add(block)
+			}
+		}
+	}
+
 	def UpdateMessageBlocks(blocks) 
 	{
+		blocks = PostProcessBlocks(blocks)
 		if(allowSlackSend)
 		{
 			context.slackSend(channel: slackMessage.channelId, blocks: blocks, timestamp: slackMessage.ts)
@@ -80,6 +109,7 @@ class SlackUtils
 
 	def PostBlockToThread(blocks) 
 	{
+		blocks = PostProcessBlocks(blocks)
 		if(allowSlackSend)
 		{
 			context.slackSend(channel: slackMessage.threadId, blocks: blocks)
