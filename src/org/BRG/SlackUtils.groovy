@@ -64,7 +64,7 @@ class SlackUtils
 			{
 				for(def item : block)
 				{
-					sectionCharacterCount += item.length()
+					sectionCharacterCount += item.toString().length()
 					if(sectionCharacterCount >= sectionCharacterLimit)
 					{
 						blocks.remove(item)
