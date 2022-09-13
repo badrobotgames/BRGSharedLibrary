@@ -38,7 +38,7 @@ class SlackUtils
 		}
 		else
 		{
-			context.echo "${env.JOB_NAME}_${env.BUILD_ID}: Initializing color(${GetStatusColor()})".toString()
+			context.echo "${env.JOB_NAME}_${env.BUILD_ID}: Initializing".toString()
 		}
 	}
 
