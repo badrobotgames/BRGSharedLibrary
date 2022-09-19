@@ -56,20 +56,16 @@ class SlackUtils
 
 	def PostProcessBlocks(blocks)
 	{
-		def sectionCharacterLimit = 3000
+		context.echo "blocksLength(${blocks.toString().length()})"
+		def characterLimit = 3000
+		def characterCount = 0
 		for(def block : blocks)
 		{
-			def sectionCharacterCount = 0
-			if(block["type"] == "section")
+			context.echo "  - blockLength(${})"
+			characterCount += block.toString().length()
+			if(characterCount >= characterLimit)
 			{
-				for(def item : block)
-				{
-					sectionCharacterCount += item.toString().length()
-					if(sectionCharacterCount >= sectionCharacterLimit)
-					{
-						blocks.remove(item)
-					}
-				}
+				blocks.remove(block)
 			}
 		}
 		return blocks
